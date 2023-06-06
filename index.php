@@ -33,15 +33,16 @@
     var myApp = angular.module("myApp", ['ui.sortable']);        
     myApp.controller("mainController", function($scope) {
     //  $scope.items = ["fjdklsjfk","Jdjfkld","Djfd"];
-   
+    $sitems = [];
     $.getJSON('./applicants.json', function(jd) {
-        console.log(jd);
-        $.each(jd,function(){
-            console.log(this.lastname);
-            $scope.items += this.lastname;
+        $.each(jd,function(id,key){
+            $sitems[0].push(key.lastname);
         });
     });
-    //  $scope.items = JSON.parse(appie);
+    console.log(typeof $sitems);
+    console.log($sitems);
+     $scope.items = JSON.stringify($sitems);
+     console.log(typeof $scope.items);
      $scope.sortableOptions = {
         update: function(e, ui) { 
             console.log(e);
