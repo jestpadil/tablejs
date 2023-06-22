@@ -1,95 +1,109 @@
-
-<!DOCTYPE html>
-
 <html>
-
 <head>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.2/angular.min.js"></script>
-
-    <script src="http://cdn.jsdelivr.net/g/jquery@1,jquery.ui@1.10%28jquery.ui.core.min.js+jquery.ui.widget.min.js+jquery.ui.mouse.min.js+jquery.ui.sortable.min.js%29,angularjs@1.2,angular.ui-sortable"></script>
-
+    <meta name="author" content="Jen Estrada-Padil"/>
+    <meta name="description" content="Drag and drop content of CSE"/>
+    <meta name="viewport" content="width=device-width, user-scalable=no"/>
+    <link rel="stylesheet" href="./css/bootstrap5.min.css" type="text/css" media="screen" />
+    <!--  <link rel="stylesheet" href="./redips/style.css" type="text/css" media="screen" /> -->
+    <script type="text/javascript" src="./redips/header.js"></script>
+    <script type="text/javascript" src="./redips/redips-drag-min.js"></script>
+    <script type="text/javascript" src="./js/script.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/base/jquery-ui.css"/>
+		
+    <title>CSE-Seat Arrangement</title>
 </head>
-
 <body>
-<script type="text/javascript">
-// read local JSON file in javascript
-
-// var appie = fetch("./applicants.json")
-//   .then(function (response) {
-//     return response.json();
-//   })
-//   .then(function (data) {
-//     console.log(data);
-//   });
-
-// console.log(appie);
-    var myApp = angular.module("myApp", ['ui.sortable']);        
-    myApp.controller("mainController", function($scope) {
-    //  $scope.items = ["fjdklsjfk","Jdjfkld","Djfd"];
-    $sitems = [];
-    $.getJSON('./applicants.json', function(jd) {
-        $.each(jd,function(id,key){
-            $sitems[0].push(key.lastname);
-        });
-    });
-    console.log(typeof $sitems);
-    console.log($sitems);
-     $scope.items = JSON.stringify($sitems);
-     console.log(typeof $scope.items);
-     $scope.sortableOptions = {
-        update: function(e, ui) { 
-            console.log(e);
-        },
-        axis: 'x'
-      };
-    });
-</script>
-
-<div >
-
-    <div ng-app="myApp" ng-controller="mainController" data-ng-init="init()">
-        <table >
-            <tr>
-               <th>Website List</th>
-            </tr>
-            <tbody ui-sortable ng-model="items">
-            <tr ng-repeat="item in items">
-                <td>{{ item }}</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-</body>
 <?php
- // Read the JSON file
- $json = file_get_contents('applicants.json');
- 
- // Decode the JSON file
- $json_data = json_decode($json,true);
-
-echo "<table border='1'><thead>1-1</thead><tbody>";
-$i = 0;
- foreach($json_data as $jj){
-    if ($i == 0){
-        echo "<tr>";
-    }
-
-    $i++;
-  //  echo "<td class='1-1'>".$jj['lastname']."</td>";
-
-    if($i == 5){
-        $i = 0;
-        echo "</tr>";
-    }
- }
-echo "</tbody></tbody>";
+// Read the JSON file
+$json = file_get_contents('applicants.json');
+// Decode the JSON file
+$json_data = json_decode($json,true);
+$row_color = array("success","danger","warning","info","primary");
+$row_color2 = array("danger","warning","primary","success","info");
 ?>
+<br>
+<div class="container-fluid">
+    <div class="row" id="redips-drag">
+        <div class="col-sm-6">
+            <table class="table">
+                <tbody>
+                    <tr class="lgrey">
+                <?php
+                    $i = 0;
+                    foreach($json_data as $jj){
+                    $jid = $jj['sid']."_".$jj['rid']."_".$jj['fid']."_".$jj['snum'];
+                    $rccolor2 = $row_color2[$i];
+
+                    if ($i == 0){
+                        echo "<tr>";
+                    }
+                
+                    $i++;
+                    echo '<td class="table-'.$rccolor2.'"><div id="'.$jid.'" class="redips-drag p-1 bg-primary text-white">'.$jj['lastname'].'</td>';
+            
+                    if($i == 5){
+                        $i = 0;
+                        echo "</tr>";
+                    }
+                    }
+                ?>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-sm-6">
+            <table class="table">
+				<colgroup><col width="100"/><col width="100"/><col width="100"/><col width="100"/><col width="100"/></colgroup>
+                <tbody>
+                    <tr class="">
+                <?php
+                    $i = 0;
+                    foreach($json_data as $jj){
+                    $jid = $jj['sid']."_".$jj['rid']."_".$jj['fid']."_".$jj['snum']."_2";
+                    $rccolor = $row_color[$i];
+                    
+                    if ($i == 0){
+                        echo "<tr>";
+                    }
+                
+                    $i++;
+                    echo '<td class="table-'.$rccolor.'"><div id="'.$jid.'" class="redips-drag t2 p-1 bg-warning text-dark">'.$jj['lastname'].'</td>';
+            
+                    if($i == 5){
+                        $i = 0;
+                        echo "</tr>";
+                    }
+                    }
+                ?>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-sm-6">
+			<table class="table table-primary">
+				<tr class="lgrey">
+					<td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+				</tr>
+			</table>
+        </div>
+        <div class="col-sm-6">
+			<table class="table table-warning">
+				<tr class="lgrey">
+					<td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+				</tr>
+			</table>
+        </div> 
+    </div> <!-- div row --> 
+</div> <!-- div container -->
+<div id="dialog" title="jQuery dialog">Please choose action!</div>
+<div id="message" class="redips-mark" title="You can not drop here"></div>
+</body>
 </html>
